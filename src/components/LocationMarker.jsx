@@ -6,6 +6,12 @@ import { getDigiPin } from "../utils/digipin";
 const LocationMarker = ({ location, onSelect, onClear }) => {
   useMapEvents({
     click(e) {
+      if (
+        e.originalEvent.target.id === "current-location-button" ||
+        e.originalEvent.target.closest("#current-location-button")
+      ) {
+        return;
+      }
       let digiPin;
       try {
         digiPin = getDigiPin(e.latlng.lat, e.latlng.lng);
