@@ -7,7 +7,7 @@ import LocationMarker from "./components/LocationMarker";
 import StatusBar from "./components/StatusBar";
 import { getDigiPin } from "./utils/digipin";
 
-const initialPosition = { lat: 24.452531, lng: 87.84183 };
+const initialPosition = { lat: 28.6448, lng: 77.216721 };
 
 const fetchIndiaBorder = async () => {
   const response = await fetch(
