@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   MapPin,
   Copy,
@@ -10,10 +11,29 @@ import {
   Flag,
 } from "lucide-react";
 
+const fetchAddress = async ({ queryKey }) => {
+  const [_key, { lat, lng }] = queryKey;
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`
+  );
+  if (!response.ok) throw new Error("Failed to fetch address");
+  const data = await response.json();
+  return data.address;
+};
+
 const DigipinPopup = ({ location, onClose }) => {
   const [copied, setCopied] = useState(false);
-  const [address, setAddress] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const {
+    data: address,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ["address", { lat: location.lat, lng: location.lng }],
+    queryFn: fetchAddress,
+    refetchOnWindowFocus: false,
+    enabled: !!location.lat && !!location.lng,
+  });
 
   const handleCopy = async () => {
     try {
@@ -24,26 +44,6 @@ const DigipinPopup = ({ location, onClose }) => {
       console.error("Copy failed:", err);
     }
   };
-
-  useEffect(() => {
-    const fetchAddress = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.lat}&lon=${location.lng}&zoom=18&addressdetails=1`
-        );
-        const data = await response.json();
-        console.log(data);
-        setAddress(data.address);
-      } catch (error) {
-        console.error("Error fetching address:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAddress();
-  }, [location.lat, location.lng]);
 
   return (
     <div className="instant-digipin-overlay p-6">
@@ -91,8 +91,10 @@ const DigipinPopup = ({ location, onClose }) => {
           </button>
         </div>
         <div className="border-t pt-3 space-y-2 text-sm">
-          {loading ? (
+          {isPending ? (
             <div className="text-center text-gray-500">Loading address...</div>
+          ) : isError ? (
+            <div className="text-center text-gray-500">Address not found</div>
           ) : address ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
               <div className="bg-gray-50 p-3 rounded-lg flex items-center space-x-3">

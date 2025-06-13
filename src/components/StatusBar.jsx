@@ -27,7 +27,8 @@ const StatusBar = ({ location, onSearchLocation }) => {
         digiPin: searchPin.trim(),
       });
       setSearchPin("");
-    } catch {
+    } catch (error) {
+      console.error("Error searching Bharat PIN:", error);
       setSearchError("Invalid Bharat PIN");
     }
   };
