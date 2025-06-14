@@ -1,4 +1,3 @@
-// components/LocationMarker/LocationMarker.jsx
 import React from "react";
 import { Marker, Popup } from "react-leaflet";
 import DigipinPopup from "../BharatPinPopup/DigipinPopup";

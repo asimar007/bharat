@@ -1,13 +1,3 @@
-/**
- * DIGIPIN Encoder and Decoder Library
- * Developed by India Post, Department of Posts
- * Released under an open-source license for public use
- *
- * This module contains two main functions:
- *  - getDigiPin(lat, lon): Encodes latitude & longitude into a 10-digit alphanumeric DIGIPIN
- *  - getLatLngFromDigiPin(digiPin): Decodes a DIGIPIN back into its central latitude & longitude
- */
-
 const DIGIPIN_GRID = [
   ["F", "C", "9", "8"],
   ["J", "3", "2", "7"],

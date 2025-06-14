@@ -1,7 +1,6 @@
-// components/DigipinPopup/DigipinPopup.jsx
 import React, { useState } from "react";
 import { MapPin, Copy, CheckCircle, X } from "lucide-react";
-import { useAddress } from "./useAddress";
+import { useAddress } from "../../hooks/useAddress";
 import AddressDetails from "./AddressDetails";
 
 export default function DigipinPopup({ location, onClose }) {
